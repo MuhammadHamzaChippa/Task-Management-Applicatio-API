@@ -1,0 +1,11 @@
+# Create the docker-compose.yml in the root of the project
+version: '3.8'
+services:
+  dev-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: task-management
+    ports:
+      - 5430:5432
