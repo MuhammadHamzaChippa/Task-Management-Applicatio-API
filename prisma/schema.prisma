@@ -24,14 +24,14 @@ model User {
 model Task {
   id           Int       @id @default(autoincrement())
   title        String
-  description  String
-  dueDate      DateTime
-  priority     String
-  status       String
-  assignedTo   User?     @relation("AssignedTasks", fields: [assignedToId], references: [id])
+  description  String?
+  dueDate      DateTime?
+  priority     String?
+  status       String?
   assignedToId Int?
-  createdBy    User      @relation("CreatedTasks", fields: [createdById], references: [id])
+  assignedTo   User?     @relation("AssignedTasks", fields: [assignedToId], references: [id])
   createdById  Int
+  createdBy    User      @relation("CreatedTasks", fields: [createdById], references: [id])
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   comments     Comment[]
@@ -40,9 +40,9 @@ model Task {
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String
-  task      Task     @relation(fields: [taskId], references: [id])
   taskId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id])
   userId    Int
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }

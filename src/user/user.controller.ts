@@ -12,11 +12,18 @@ import { JwtGuard } from 'src/auth/guard';
 import { UserService } from './user.service';
 import { User } from '@prisma/client';
 import { EditRole, EditUser } from './dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiTags('User')
 @UseGuards(JwtGuard)
 export class UserController {
   constructor(private user: UserService) {}
+
+  @Get('all')
+  getAllUser() {
+    return this.user.getAllUser();
+  }
   @Get('me')
   getMe(@GetUser() user: User) {
     return user;
@@ -38,16 +45,16 @@ export class UserController {
 
   @Get('/tasks')
   getTasks(@GetUser('id') userId: number) {
-    return this.user.getter(userId, 'createdTasks');
+    return this.user.getTasks(userId);
   }
 
   @Get('/asignedTasks')
   getAssignedTasks(@GetUser('id') userId: number) {
-    return this.user.getter(userId, 'assignedTasks');
+    return this.user.getAssignedTasks(userId);
   }
 
   @Get('/comments')
   getComments(@GetUser('id') userId: number) {
-    return this.user.getter(userId, 'comments');
+    return this.user.getUserComments(userId);
   }
 }

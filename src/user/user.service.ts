@@ -5,6 +5,10 @@ import { EditRole, EditUser } from './dto';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
+  async getAllUser() {
+    return this.prisma.user.findMany();
+  }
   async editUser(userId: number, dto: EditUser) {
     return this.prisma.user.update({
       where: {
@@ -47,14 +51,27 @@ export class UserService {
     });
   }
 
-  async getter(useId: number, value: string) {
-    console.log(value)
-    const user = await this.prisma.user.findUnique({
+  async getTasks(userId: number) {
+    return this.prisma.task.findMany({
       where: {
-        id: useId,
+        createdById: userId,
       },
     });
-    console.log(user)
-    return { [value]: user[value] };
+  }
+
+  async getAssignedTasks(userId: number) {
+    return this.prisma.task.findMany({
+      where: {
+        assignedToId: userId,
+      },
+    });
+  }
+
+  async getUserComments(userId: number) {
+    return this.prisma.comment.findMany({
+      where: {
+        userId: userId,
+      },
+    });
   }
 }
